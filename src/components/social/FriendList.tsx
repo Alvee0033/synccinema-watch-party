@@ -39,7 +39,7 @@ export default function FriendList() {
 
     const startRoom = () => {
         const roomId = Math.random().toString(36).substring(7);
-        router.push(`/room/${roomId}`);
+        router.push(`/room?id=${roomId}`);
     };
 
     return (

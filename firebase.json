@@ -6,24 +6,18 @@
     "database": {
         "rules": "database.rules.json"
     },
-    "functions": {
-        "source": ".",
-        "runtime": "nodejs18",
-        "predeploy": [
-            "npm run build"
-        ]
-    },
     "hosting": {
-        "public": "public",
+        "public": "out",
         "ignore": [
             "firebase.json",
             "**/.*",
             "**/node_modules/**"
         ],
+        "cleanUrls": true,
         "rewrites": [
             {
                 "source": "**",
-                "function": "nextjsFunc"
+                "destination": "/index.html"
             }
         ]
     }

@@ -15,13 +15,12 @@ export default function MovieSearch() {
         setLoading(true);
 
         try {
-            const res = await fetch(`/api/himovies/search?q=${encodeURIComponent(query)}`);
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                setResults(data);
-            }
+            const { searchMovies } = await import('@/lib/himoviesClient');
+            const data = await searchMovies(query);
+            setResults(data);
         } catch (err) {
-            console.error(err);
+            console.error('Search error:', err);
+            setResults([]);
         } finally {
             setLoading(false);
         }
@@ -32,7 +31,7 @@ export default function MovieSearch() {
         const roomId = Math.random().toString(36).substring(7);
         // Encode the movie URL/ID to pass to the room
         // Ideally we store this in DB, but query param works for MVP
-        router.push(`/room/${roomId}?src=${encodeURIComponent(movie.href)}&title=${encodeURIComponent(movie.title)}`);
+        router.push(`/room?id=${roomId}\u0026movieHref=${encodeURIComponent(movie.href)}\u0026title=${encodeURIComponent(movie.title)}`);
     };
 
     return (

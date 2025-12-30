@@ -24,19 +24,19 @@ interface Category {
 const categories: Category[] = [
     {
         title: "Trending Now",
-        endpoint: "/api/himovies/movies?section=trending",
+        endpoint: "trending",
         icon: TrendingUp,
         gradient: "from-red-500 via-purple-500 to-pink-500"
     },
     {
         title: "Latest Movies",
-        endpoint: "/api/himovies/movies?section=latest-movies",
+        endpoint: "latest-movies",
         icon: Star,
         gradient: "from-blue-500 via-cyan-500 to-teal-500"
     },
     {
         title: "Latest TV Shows",
-        endpoint: "/api/himovies/movies?section=latest-tv",
+        endpoint: "latest-tv",
         icon: Play,
         gradient: "from-orange-500 via-yellow-500 to-amber-500"
     },
@@ -67,7 +67,7 @@ function MovieRow({ title, movies, router, icon: Icon, gradient }: { title: stri
 
     const startWatching = (movie: Movie) => {
         const roomId = Math.random().toString(36).substring(7);
-        router.push(`/room/${roomId}?movieId=${movie.id}&movieHref=${encodeURIComponent(movie.href)}&title=${encodeURIComponent(movie.title)}`);
+        router.push(`/room?id=${roomId}&movieId=${movie.id}&movieHref=${encodeURIComponent(movie.href)}&title=${encodeURIComponent(movie.title)}`);
     };
 
     return (
@@ -209,13 +209,9 @@ export default function NetflixLibrary() {
         await Promise.all(
             categories.map(async (cat) => {
                 try {
-                    const res = await fetch(cat.endpoint);
-                    const data = await res.json();
-                    if (Array.isArray(data)) {
-                        results[cat.title] = data;
-                    } else {
-                        results[cat.title] = [];
-                    }
+                    const { getMovies } = await import('@/lib/himoviesClient');
+                    const data = await getMovies(cat.endpoint as any);
+                    results[cat.title] = data;
                 } catch (err) {
                     console.error(`Failed to fetch ${cat.title}:`, err);
                     results[cat.title] = [];

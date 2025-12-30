@@ -1,14 +1,14 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Chat from "@/components/room/Chat";
 import ControlDeck from "@/components/room/ControlDeck";
 import { useFirebaseSync } from "@/hooks/useFirebaseSync";
 import { Play, Pause, ExternalLink, Video, VideoOff, Phone, PhoneOff, MonitorUp, MonitorOff, Loader2 } from "lucide-react";
 
 export default function Room() {
-    const { id } = useParams();
     const searchParams = useSearchParams();
+    const id = searchParams.get('id') || 'default';
     const [loading, setLoading] = useState(true);
     const [watchUrl, setWatchUrl] = useState("");
     const [videoEnabled, setVideoEnabled] = useState(false);
@@ -259,8 +259,8 @@ export default function Room() {
                                         <button
                                             onClick={toggleScreenShare}
                                             className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl font-medium transition-all ${screenSharing
-                                                    ? 'bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-500/50'
-                                                    : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
+                                                ? 'bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-500/50'
+                                                : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
                                                 }`}
                                         >
                                             {screenSharing ? <MonitorUp size={24} /> : <MonitorOff size={24} />}
@@ -271,8 +271,8 @@ export default function Room() {
                                         <button
                                             onClick={() => setVideoEnabled(!videoEnabled)}
                                             className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl font-medium transition-all ${videoEnabled
-                                                    ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-500/50'
-                                                    : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
+                                                ? 'bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-500/50'
+                                                : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
                                                 }`}
                                         >
                                             {videoEnabled ? <Video size={24} /> : <VideoOff size={24} />}
@@ -283,8 +283,8 @@ export default function Room() {
                                         <button
                                             onClick={() => setAudioEnabled(!audioEnabled)}
                                             className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl font-medium transition-all ${audioEnabled
-                                                    ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/50'
-                                                    : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
+                                                ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/50'
+                                                : 'bg-white/5 hover:bg-white/10 text-white/60 border border-white/10'
                                                 }`}
                                         >
                                             {audioEnabled ? <Phone size={24} /> : <PhoneOff size={24} />}

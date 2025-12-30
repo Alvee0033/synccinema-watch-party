@@ -16,13 +16,13 @@ export default function MovieLibrary() {
     const fetchMovies = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`/api/himovies/movies?type=${type}`);
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                setMovies(data);
-            }
+            const { getMovies } = await import('@/lib/himoviesClient');
+            const section = type === 'movie' ? 'latest-movies' : 'latest-tv';
+            const data = await getMovies(section as any);
+            setMovies(data);
         } catch (err) {
-            console.error(err);
+            console.error('Fetch movies error:', err);
+            setMovies([]);
         } finally {
             setLoading(false);
         }
@@ -30,7 +30,7 @@ export default function MovieLibrary() {
 
     const startWatching = (movie: any) => {
         const roomId = Math.random().toString(36).substring(7);
-        router.push(`/room/${roomId}?src=${encodeURIComponent(movie.href)}&title=${encodeURIComponent(movie.title)}`);
+        router.push(`/room?id=${roomId}&movieHref=${encodeURIComponent(movie.href)}&title=${encodeURIComponent(movie.title)}`);
     };
 
     return (
