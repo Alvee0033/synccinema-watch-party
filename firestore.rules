@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection - read if authenticated, write only your own
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Friend invites - authenticated users can read and write
+    match /invites/{inviteId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow authenticated users to read all for search
+    match /{document=**} {
+      allow read: if request.auth != null;
+    }
+  }
+}
